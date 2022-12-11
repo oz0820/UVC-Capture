@@ -2,15 +2,6 @@ from datetime import datetime
 from main import html_root
 
 
-def uvc_device_error(handler):
-    with open(html_root+'/uvcDeviceError.html', 'rb') as html:
-        handler.send_response(500)
-        handler.send_header('Content-Type', 'text/html; charset=utf-8')
-        handler.end_headers()
-        handler.wfile.write(html.read())
-        return handler
-
-
 def favicon(handler):
     with open(html_root+'/favicon.ico', 'rb') as ico:
         handler.send_response(200)

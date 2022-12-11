@@ -1,3 +1,4 @@
+import sys
 import threading
 import cv2
 from urllib.parse import urlparse
@@ -9,7 +10,6 @@ from tools import logger
 html_root = "/usr/UVC-Capture/src/www"  # HTMLが格納されているディレクトリ
 server_config = ('', 80)
 
-uvc_ok = False
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -20,17 +20,12 @@ class Handler(SimpleHTTPRequestHandler):
         pass  # ログ出力を無視
 
     def do_GET(self):
-        global uvc_ok
         logger('GET path = {}'.format(self.path))
         parsed_path = urlparse(self.path)
 
         # ファビコン要求されたらファビコン返す
         if parsed_path.path == '/favicon.ico':
             tools.favicon(self)
-            return
-
-        if not uvc_ok:
-            tools.uvc_device_error(self)
             return
 
         # キャプチャ画像要求
@@ -88,14 +83,13 @@ def begin_dummy_server():
 
 
 def init():
-    global uvc_ok
     cap = cv2.VideoCapture(0)
     if cap.isOpened():
-        uvc_ok = True
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
     else:
         logger('Cannot open the UVC device.')
+        sys.exit(-1)
     return cap
 
 

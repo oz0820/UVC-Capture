@@ -7,7 +7,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 import tools
 
 html_root = "/usr/UVC-Capture/src/www"  # HTMLが格納されているディレクトリ
-server_config = ('', 8080)
+server_config = ('', 8081)
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -31,10 +31,9 @@ class Handler(SimpleHTTPRequestHandler):
             # UVCデバイスから画像を取得
             ret, frame = cap.read()
 
-            # 取得に失敗したらエラー返す
+            # 取得に失敗したら強制終了
             if not ret:
-                tools.capture_error(self)
-                return
+                sys.exit(-2)
 
             # jpg化したバイナリ
             content = cv2.imencode(".jpg", frame)[1]

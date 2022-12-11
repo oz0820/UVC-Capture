@@ -1,0 +1,10 @@
+[Unit]
+Description=UVC Capture server.
+After=syslog.target network.target
+
+[Service]
+ExecStart=/usr/UVC-Capture/.venv/bin/python /usr/UVC-Capture/src/main.py
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

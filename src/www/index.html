@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>UVC Capture</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<h3 id="stop_button">押すと停止します</h3>
+<a id="time_stamp"></a>
+<br>
+<img id="main" src="/capture.jpg" alt="画像を取得できません。">
+
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('time_stamp').textContent = new Date().toLocaleString();
+
+        let reload_count = 0;
+        const reload_timer = setInterval(() => {
+            let before = document.getElementById('main').src.split("?")[0];
+            document.getElementById('main').src = before+"?"+new Date().getTime();
+            document.getElementById('time_stamp').textContent = new Date().toLocaleString();
+            reload_count += 1;
+            /*
+            if (reload_count > 5) {
+                clearInterval(reload_timer);
+                document.getElementById('stop_button').textContent = '停止しました';
+            }
+            */
+        }, 1000);
+
+        document.getElementById("stop_button").addEventListener('click', function () {
+            document.getElementById('stop_button').textContent = '停止しました';
+            clearInterval(reload_timer);
+        });
+    })
+</script>
+
+</body>
+</html>

@@ -5,11 +5,9 @@ from urllib.parse import urlparse
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 import tools
-from tools import logger
 
 html_root = "/usr/UVC-Capture/src/www"  # HTMLが格納されているディレクトリ
-server_config = ('', 80)
-
+server_config = ('', 8080)
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -20,7 +18,7 @@ class Handler(SimpleHTTPRequestHandler):
         pass  # ログ出力を無視
 
     def do_GET(self):
-        logger('GET path = {}'.format(self.path))
+        tools.logger('GET path = {}'.format(self.path))
         parsed_path = urlparse(self.path)
 
         # ファビコン要求されたらファビコン返す
@@ -88,7 +86,7 @@ def init():
         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
     else:
-        logger('Cannot open the UVC device.')
+        tools.logger('Cannot open the UVC device.')
         sys.exit(-1)
     return cap
 
@@ -96,4 +94,4 @@ def init():
 if __name__ == "__main__":
     cap = init()
     begin_dummy_server()
-    logger("Server start.")
+    tools.logger("Server start.")

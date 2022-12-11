@@ -7,7 +7,7 @@ if [[ `id -u` -ne 0 ]]; then
 fi
 
 if type "python3.9" > /dev/null 2>&1; then
-    continue
+    :
 else
     apt install python3.9 python3.9-venv -y
 fi

@@ -72,7 +72,6 @@ class Handler(SimpleHTTPRequestHandler):
 
 def begin_dummy_server():
     httpd = HTTPServer(server_config, Handler)
-    print(f'HTTPServer began -> http://192.168.239.183:{server_config[1]}/')
 #    httpd.serve_forever()
     server_thread = threading.Thread(target=httpd.serve_forever)  # スレッドで動かす
 #    server_thread.daemon = True

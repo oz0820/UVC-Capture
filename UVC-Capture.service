@@ -5,7 +5,10 @@ After=syslog.target network.target
 [Service]
 ExecStart=/usr/UVC-Capture/.venv/bin/python /usr/UVC-Capture/src/main.py
 ExecReload=/bin/kill -HUP $MAINPID
-Restart=yes
+KillMode=process
+StartLimitInterval=3
+StartLimitAction=reboot
+Restart=always
 
 [Install]
 WantedBy=multi-user.target

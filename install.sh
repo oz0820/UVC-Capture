@@ -6,11 +6,19 @@ if [[ `id -u` -ne 0 ]]; then
   exit 1
 fi
 
+free=`df / | grep / | awk '{print$4}'`
+if [ $free -lt 2000000 ]; then
+  echo "Free space is less than about 2GB."
+  exit
+fi
+
 if type "python3.9" > /dev/null 2>&1; then
     :
 else
     apt install python3.9 python3.9-venv -y
 fi
+
+sudo apt install libopencv-dev -y
 
 mkdir /usr/UVC-Capture/
 cd `dirname $0`

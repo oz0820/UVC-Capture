@@ -8,32 +8,54 @@
 </head>
 <body>
 <h3 id="stop_button">押すと停止します</h3>
+<select id="reload_time">
+    <option name="200">200ms</option>
+    <option name="300">300ms</option>
+    <option name="500" selected>500ms</option>
+    <option name="1000">1000ms</option>
+    <option name="5000">5000ms</option>
+    <option name="10000">10000ms</option>
+
+</select>
+<br>
 <a id="time_stamp"></a>
 <br>
 <img id="main" src="/capture.jpg" alt="画像を取得できません。">
 
 <script>
     window.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('time_stamp').textContent = new Date().toLocaleString();
+        let reload_timer;
+
+        function set_timer(time) {
+            reload_timer = setInterval(() => {
+                let before = document.getElementById('main').src.split("?")[0];
+                let dt = new Date();
+                document.getElementById('main').src = before+"?"+dt.getTime();
+                document.getElementById('time_stamp').textContent = dt.toLocaleString() + "." + (String(dt.getTime() / 1000 ).split('.')[1] + "000").slice(0, 3);
+                reload_count += 1;
+            }, time);
+        }
+
+        let dt = new Date();
+        document.getElementById('time_stamp').textContent = dt.toLocaleString() + "." + (String(dt.getTime() / 1000 ).split('.')[1] + "000").slice(0, 3);
 
         let reload_count = 0;
-        const reload_timer = setInterval(() => {
-            let before = document.getElementById('main').src.split("?")[0];
-            document.getElementById('main').src = before+"?"+new Date().getTime();
-            document.getElementById('time_stamp').textContent = new Date().toLocaleString();
-            reload_count += 1;
-            /*
-            if (reload_count > 5) {
-                clearInterval(reload_timer);
-                document.getElementById('stop_button').textContent = '停止しました';
-            }
-            */
-        }, 1000);
+        set_timer(500);
+
 
         document.getElementById("stop_button").addEventListener('click', function () {
             document.getElementById('stop_button').textContent = '停止しました';
             clearInterval(reload_timer);
         });
+
+        document.getElementById('reload_time').addEventListener("change", function () {
+            let time_list = [200, 300, 500, 1000, 5000, 10000]
+            clearInterval(reload_timer);
+            set_timer(time_list[this.selectedIndex]);
+            document.getElementById('stop_button').textContent = '押すと停止します';
+            console.log("set interval:", time_list[this.selectedIndex], "ms")
+        });
+
     })
 </script>
 
